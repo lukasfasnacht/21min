@@ -1,0 +1,96 @@
+{% extends "template.html" %}
+
+{% block content %}
+<!-- Gesamtes Styling wurde mit TailwindCSS umgesetzt, da es sich um ein einfaches und schnelles Framework handelt, welches ich bereits gut kenne. Negativer Punkt, durch die vielen Klassen wird der HTML-Code sehr unübersichtlich. -->
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div class="max-w-md w-full space-y-8 p-10 bg-white rounded-lg shadow-md">
+            <h1 class="text-3xl font-extrabold text-gray-900 text-center">Preferenzen speichern</h1>
+            <!-- Forumular zum Speichern der Preferenzeinstellung des Landes, der Kategorie und des Keywords. Wenn ein Keyword eingegeben wird, werden die anderen Felder deaktiviert. Wenn ein Land oder eine Kategorie ausgewählt wird, wird das Keyword deaktiviert. -> Siehe JavaScript unten. -->
+            <form action="/preferences" method="post" class="space-y-6">
+                <div>
+                    <!-- Dropdown für das Land -->
+                    <label for="country" class="block text-sm font-medium text-gray-700">Land:</label>
+                    <select name="country" id="country" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="">Wählen...</option>
+                        <option value="ch">Schweiz</option>
+                        <option value="de">Deutschland</option>
+                        <option value="at">Österreich</option>
+                        <option value="fr">Frankreich</option>
+                        <option value="it">Italien</option>
+                        <option value="gb">Grossbritannien</option>
+                        <option value="us">USA</option>
+                    </select>
+                </div>
+                <div>
+                    <!-- Dropdown für die Kategorie -->
+                    <label for="category" class="block text-sm font-medium text-gray-700">Kategorie:</label>
+                    <select name="category" id="category" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="">Wählen...</option>
+                        <option value="general">Allgemein</option>
+                        <option value="business">Business</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="health">Gesundheitswesen</option>
+                        <option value="science">Wissenschaften</option>
+                        <option value="sports">Sport</option>
+                        <option value="technology">Technologie</option>
+                    </select>
+                </div>
+                <div>
+                    <!-- Eingabefeld für das Keyword -->
+                    <label for="keyword" class="block text-sm font-medium text-gray-700">Keyword:</label>
+                    <input type="text" id="keyword" name="keyword" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <!-- Button zum Speichern der Preferenzen -->
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Speichern</button>
+                </div>
+            </form>
+            <!-- Zurück zur Übersicht -->
+            <div class="text-center">
+                <a href="{{ url_for('home') }}" class="font-medium text-indigo-600 hover:text-indigo-500">Zurück zur Übersicht</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Das JavaScript dient dazu, die Interaktionen und Validierungen des Formulars zu steuern. Da Keyword und Land/Kategorie nicht die gleichen Endpoints der API abrufen können, darf entweder nur ein Keyword oder ein Land/Kategorie ausgewählt werden.
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const country = document.getElementById('country');
+            const category = document.getElementById('category');
+            const keyword = document.getElementById('keyword');
+            const form = document.querySelector('form');
+            
+            // Die Funktion toggleInputs wird aufgerufen, wenn sich der Wert des Landes, der Kategorie oder des Keywords ändert.
+            // Sie überprüft, ob ein Keyword eingegeben wurde und deaktiviert entsprechend die anderen Felder.
+            // Wenn ein Land oder eine Kategorie ausgewählt wurde, wird das Keyword deaktiviert.
+            function toggleInputs() {
+                if (keyword.value.trim() !== '') {
+                    country.disabled = true;
+                    category.disabled = true;
+                } else {
+                    country.disabled = false;
+                    category.disabled = false;
+                }
+
+                if (country.value !== '' || category.value !== '') {
+                    keyword.disabled = true;
+                } else {
+                    keyword.disabled = false;
+                }
+            }
+
+            // Die Event-Listener werden hinzugefügt, um die Funktionen aufzurufen, wenn sich die Werte der Felder ändern.
+            country.addEventListener('change', toggleInputs);
+            category.addEventListener('change', toggleInputs);
+            keyword.addEventListener('input', toggleInputs);
+
+            toggleInputs();
+
+            // Das Formular wird bei Absenden wieder aktiviert, um einen Wert für jedes Feld zu übergeben. Wenn ein Feld noch deaktiviert ist, wird kein Wert übergeben und der Flask-Server gibt einen Fehler zurück.
+            form.addEventListener('submit', function() {
+                country.disabled = false;
+                category.disabled = false;
+                keyword.disabled = false;
+            });
+        });
+    </script>
+{% endblock %}

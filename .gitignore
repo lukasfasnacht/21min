@@ -1,0 +1,35 @@
+# Build and Release Folders
+bin-debug/
+bin-release/
+[Oo]bj/
+[Bb]in/
+
+# Other files and folders
+.settings/
+
+# macOS system files
+.DS_Store
+
+# Executables
+*.swf
+*.air
+*.ipa
+*.apk
+
+# API Keys
+config.py
+
+# Python cache files
+__pycache__/
+
+# test files
+sandbox/
+
+# User files
+users/
+
+
+
+# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# should NOT be excluded as they contain compiler settings and other important
+# information for Eclipse / Flash Builder.

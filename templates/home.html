@@ -1,0 +1,59 @@
+{% extends "template.html" %}
+
+{% block content %}
+<!-- Gesamtes Styling wurde mit TailwindCSS umgesetzt, da es sich um ein einfaches und schnelles Framework handelt, welches ich bereits gut kenne. Negativer Punkt, durch die vielen Klassen wird der HTML-Code sehr unübersichtlich. -->
+    <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        <div class="max-w-7xl w-full space-y-8 p-10 bg-white rounded-lg shadow-md text-center">
+            <div class="flex items-center justify-center space-x-4">
+                <h1 class="text-4xl font-extrabold text-gray-900">21 Minuten</h1>
+                <img src="{{ url_for('static', filename='favicon.png') }}" alt="Logo" class="h-16 w-16">
+            </div>
+            <div class="flex justify-center space-x-4">
+                <a href="{{ url_for('search') }}"
+                   class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                   Artikel suchen
+                </a>
+                <a href="{{ url_for('preferences') }}"
+                   class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                   Dashboard Settings
+                </a>
+                <a href="{{ url_for('logout') }}"
+                   class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                   Logout
+                </a>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 mt-10">Willkommen zu deinem Nachrichten Dashboard</h1>
+            <div class="container mx-auto px-4 mt-6">
+                <!-- Die Schleife durchläuft alle Artikel und gibt sie in einem Grid aus. -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {% for article in articles %}
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            {% if article.urlToImage %}
+                                <!-- Wenn ein Bild vorhanden ist, wird es angezeigt. -->
+                                <img src="{{ article.urlToImage }}" alt="Vorschaubild" class="w-full h-48 object-cover">
+                            {% else %}
+                                <!-- Wenn kein Bild vorhanden ist, wird ein Platzhalter angezeigt. -->
+                                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                                    <img src="{{ url_for('static', filename='placeholder.png') }}" alt="Vorschaubild" class="w-full h-48 object-cover">
+                                </div>
+                            {% endif %}
+                            <div class="p-4">
+                                <!-- Der Titel des Artikels wird angezeigt. -->
+                                <h5 class="text-lg font-bold">{{ article.title }}</h5>
+                                {% if article.description %}
+                                    <!-- Wenn eine Beschreibung vorhanden ist, wird sie angezeigt. -->
+                                    <p class="text-gray-700">{{ article.description }}</p>
+                                <!-- Wenn keine Beschreibung vorhanden ist, wird der Inhalt angezeigt. -->
+                                {% else %}
+                                    <p class="text-gray-700">Keine Beschreibung gefunden</p>
+                                {% endif %}
+                                <!-- Die URL des Artikels wird geladen und mittels target="_blank" in einem neuen Tab geöffnet, wenn man auf Mehr lesen klickt. -->
+                                <a href="{{ article.url }}" class="text-blue-500 hover:underline mt-2 block" target="_blank">Mehr lesen...</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

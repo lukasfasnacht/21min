@@ -1,0 +1,21 @@
+{% extends "template.html" %}
+{% block content %}
+<!-- Gesamtes Styling wurde mit TailwindCSS umgesetzt, da es sich um ein einfaches und schnelles Framework handelt, welches ich bereits gut kenne. Negativer Punkt, durch die vielen Klassen wird der HTML-Code sehr unübersichtlich. -->
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="max-w-md w-full space-y-8 p-10 bg-white rounded-lg shadow-md text-center">
+        <h1 class="mt-6 text-3xl font-extrabold text-gray-900">Bitte melde dich an um 21 Minuten verwenden zu können</h1>
+        <div class="flex justify-center space-x-4">
+            <!-- Link zur Registrierung: -->
+            <a href="{{ url_for('register') }}" 
+               class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+               Registrieren
+            </a>
+            <!-- Link zum Login: -->
+            <a href="{{ url_for('login') }}" 
+               class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+               Login
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
